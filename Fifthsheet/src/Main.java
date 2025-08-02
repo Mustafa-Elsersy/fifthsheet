@@ -5,53 +5,99 @@ import java.util.Collections;   // <- plural
 import java.util.Comparator;
 public class Main {
 
-    private static boolean isVowel(char c) {
-        return "AEIOUYaeiouy".indexOf(c) >= 0; // Y treated as vowel
-    }
 
-    private static String compress(String s) {
-        if (s.isEmpty()) return s;
-        StringBuilder sb = new StringBuilder();
-        sb.append(s.charAt(0));
-        for (int i = 1; i < s.length(); i++) {
-            char ch = s.charAt(i);
-            if (!isVowel(ch)) sb.append(ch);
-        }
-        return sb.toString();
-    }
 
-    public static boolean isMatch(String original, String compressed) {
-        if (original.isEmpty() || compressed.isEmpty())
-            return false;
-        if (original.charAt(0) != compressed.charAt(0))
-            return false;
-        return compress(original).equals(compressed);
-    }
 
-    public static String findClosestMatch(String[] names, String compressed) {
-        ArrayList<String> matches = new ArrayList<>();
-        for (String name : names) {
-            if (isMatch(name, compressed))
-                matches.add(name);
-        }
-        if (matches.isEmpty())
-            return "NO MATCH";
+    public static String giveMeNoVowelsInMiddle(String input) {
+        StringBuilder X = new StringBuilder();
+        char[] arr = input.toCharArray();
 
-        Collections.sort(matches, new Comparator<String>() {
-            @Override
-            public int compare(String a, String b) {
-                char la = a.charAt(a.length() - 1);
-                char lb = b.charAt(b.length() - 1);
-                int byLastChar = Character.compare(la, lb);
-                if (byLastChar != 0) return byLastChar;        // earlier last char wins
-                int byLen = Integer.compare(a.length(), b.length());
-                if (byLen != 0) return byLen;                   // then shorter wins
-                return a.compareTo(b);                          // then lexicographic
+        X.append(arr[0]);
+
+        for (int i = 1; i < arr.length; i++) {
+            char ch = Character.toLowerCase(arr[i]);
+            if (ch != 'a' && ch != 'e' && ch != 'i' && ch != 'o' && ch != 'u') {
+                X.append(arr[i]);
             }
-        });
+        }
 
-        return matches.get(0);
+        return X.toString();
     }
+
+
+
+
+
+/*
+    public static boolean comparing(String name,String compressed){
+        boolean flag=false;
+        char[]comp=compressed.toCharArray();
+        char[]nam=name.toCharArray();
+        if(comp[0]!=nam[0])
+        {flag=false;
+
+        return flag;}
+
+
+
+
+        for(int i=1;i<comp.length;i++){
+
+            for(int j=1;j<nam.length;j++){
+
+                if(comp[i]==nam[j]){}
+
+
+
+            }
+
+
+
+        }
+
+
+
+        return flag;
+
+    }
+*/
+
+  public static String findClosestMatch(String [] arr,String compressedname){
+      String noVowels = "";
+      String [] arr2=new String[arr.length];
+
+
+      for(int i=0;i<arr.length;i++){
+
+
+          noVowels=giveMeNoVowelsInMiddle(arr[i]);
+
+          arr2[i]=noVowels;
+
+      }
+
+      int numberSaver=0;
+      for(int i=0;i<arr2.length;i++)
+      {
+
+
+          if(compressedname.equals(arr2[i]))
+          {
+
+
+              numberSaver=i;
+          }
+
+
+
+      }
+
+
+
+
+
+      return arr[numberSaver];
+  }
 
 
     public static void main(String[] args) {
